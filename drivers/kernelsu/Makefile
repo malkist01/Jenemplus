@@ -22,32 +22,12 @@ MDIR := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 $(info -- KDIR: $(KDIR))
 $(info -- MDIR: $(MDIR))
 
-# Check if this is a git repository
-# For in-tree build: check $(srctree)/$(src)/../.git
-# For out-of-tree build: check $(MDIR)/../.git
-ifeq ($(shell test -e $(srctree)/$(src)/../.git && echo "in-tree"),in-tree)
-# In-tree build (git submodule)
-$(shell cd $(srctree)/$(src); /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin [ -f ../.git/shallow ] && git fetch --unshallow)
-KSU_GIT_VERSION := $(shell cd $(srctree)/$(src); /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin git rev-list --count HEAD)
-KSU_GIT_VERSION_VALID := 1
-else ifeq ($(shell test -e $(MDIR)/../.git && echo "out-of-tree"),out-of-tree)
-# Out-of-tree build (standalone repository)
-$(shell cd $(MDIR); /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin [ -f ../.git/shallow ] && git fetch --unshallow)
-KSU_GIT_VERSION := $(shell cd $(MDIR); /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin git rev-list --count HEAD)
-KSU_GIT_VERSION_VALID := 1
-endif
+# compliant to last upstream kernel change as of 35d8162
+KSU_VERSION := 33033
+KSU_VERSION_TAG := v3.1.0
 
-# Calculate version if git version is available
-ifdef KSU_GIT_VERSION_VALID
-# ksu_version: major * 10000 + git version + 200 for historical reasons
-$(eval KSU_VERSION=$(shell expr 30000 + $(KSU_GIT_VERSION)))
-$(info -- KernelSU version: $(KSU_VERSION))
 ccflags-y += -DKSU_VERSION=$(KSU_VERSION)
-else
-# If there is no .git directory, use default version
-$(warning "KSU_GIT_VERSION not defined! It is better to make KernelSU a git repository!")
-ccflags-y += -DKSU_VERSION=16
-endif
+ccflags-y += -DKSU_VERSION_TAG=\"$(KSU_VERSION_TAG)\"
 
 ifeq ($(shell grep -q " current_sid(void)" $(srctree)/security/selinux/include/objsec.h; echo $$?),0)
 ccflags-y += -DKSU_COMPAT_HAS_CURRENT_SID
@@ -56,6 +36,7 @@ endif
 ifeq ($(shell grep -q "struct selinux_state " $(srctree)/security/selinux/include/security.h; echo $$?),0)
 ccflags-y += -DKSU_COMPAT_HAS_SELINUX_STATE
 endif
+
 
 ifndef KSU_EXPECTED_SIZE
 KSU_EXPECTED_SIZE := 0x033b
