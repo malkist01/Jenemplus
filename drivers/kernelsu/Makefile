@@ -16,14 +16,8 @@ ccflags-y += -I$(objtree)/security/selinux -include $(srctree)/include/uapi/asm-
 
 obj-$(CONFIG_KSU) += kernelsu.o
 
-KDIR := $(KDIR)
-MDIR := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
-
-$(info -- KDIR: $(KDIR))
-$(info -- MDIR: $(MDIR))
-
 # compliant to last upstream kernel change as of 35d8162
-KSU_VERSION := 33024
+KSU_VERSION := 33030
 KSU_VERSION_TAG := v3.1.0
 
 ccflags-y += -DKSU_VERSION=$(KSU_VERSION)
