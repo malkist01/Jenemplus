@@ -6,10 +6,6 @@ echo "Cloning toolchain"
 git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9.git -b master gcc32
 if [ "$is_test" = true ]; then
      echo "Its alpha test build"
-     unset chat_id
-     unset token
-     export chat_id=${CHAT_ID}
-     export token=${BOT_TOKEN}
 else
      echo "Its beta release build"
 fi
@@ -30,8 +26,8 @@ CHAT_ID="-1002287610863"
 function push() {
     cd AnyKernel || exit 1
     ZIP=$(echo *.zip)
-    curl -F document=@$ZIP "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" \
-        -F chat_id="${CHAT_ID}" \
+    curl -F document=@$ZIP "https://api.telegram.org/bot7868194496:AAGY7WwRRbeCOPYOnczoCPh2psC43Q0F3JI/sendDocument" \
+        -F chat_id="-1002287610863" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
         -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Samsung J6+</b>"
