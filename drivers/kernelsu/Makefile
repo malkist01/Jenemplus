@@ -23,7 +23,7 @@ $(info -- KDIR: $(KDIR))
 $(info -- MDIR: $(MDIR))
 
 # compliant to last upstream kernel change as of 35d8162
-KSU_VERSION := 33033
+KSU_VERSION := 33024
 KSU_VERSION_TAG := v3.1.0
 
 ccflags-y += -DKSU_VERSION=$(KSU_VERSION)
@@ -36,7 +36,6 @@ endif
 ifeq ($(shell grep -q "struct selinux_state " $(srctree)/security/selinux/include/security.h; echo $$?),0)
 ccflags-y += -DKSU_COMPAT_HAS_SELINUX_STATE
 endif
-
 
 ifndef KSU_EXPECTED_SIZE
 KSU_EXPECTED_SIZE := 0x033b
