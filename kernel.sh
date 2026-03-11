@@ -24,6 +24,8 @@ export PATH="$(pwd)/gcc32/bin:$PATH"
 export ARCH=arm
 export KBUILD_BUILD_USER=malkist
 export KBUILD_BUILD_HOST=android
+BOT_TOKEN="7868194496:AAGY7WwRRbeCOPYOnczoCPh2psC43Q0F3JI"
+CHAT_ID="-1002287610863"
 # Push kernel to channel
 function push() {
     cd AnyKernel || exit 1
