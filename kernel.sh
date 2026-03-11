@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 echo "Nuke previous toolchains"
-curl https://raw.githubusercontent.com/backslashxx/KernelSU/refs/heads/master/kernel/setup.sh | bash
 rm -rf toolchain out AnyKernel
 echo "cleaned up"
 echo "Cloning toolchain"
