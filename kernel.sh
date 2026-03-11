@@ -8,8 +8,8 @@ if [ "$is_test" = true ]; then
      echo "Its alpha test build"
      unset chat_id
      unset token
-     export chat_id=${my_id}
-     export token=${nToken}
+     export chat_id=${CHAT_ID}
+     export token=${BOT_TOKEN}
 else
      echo "Its beta release build"
 fi
@@ -30,8 +30,8 @@ CHAT_ID="-1002287610863"
 function push() {
     cd AnyKernel || exit 1
     ZIP=$(echo *.zip)
-    curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
-        -F chat_id="$chat_id" \
+    curl -F document=@$ZIP "https://api.telegram.org/bot${BOT_TOKEN}/sendDocument" \
+        -F chat_id="${CHAT_ID}" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
         -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Samsung J6+</b>"
